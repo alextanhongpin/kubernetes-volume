@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+        writer:
+                image: alextanhongpin/local-volume:latest
+                volumes:
+                        - ./tmp:/app/data

@@ -1,0 +1,50 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#         name: local-volume-pod
+#         labels:
+#                 app: local-volume
+# spec:
+#         containers:
+#         - image: alextanhongpin/local-volume:latest
+#           imagePullPolicy: IfNotPresent
+#           name: local-volume
+#           volumeMounts:
+#           # We mount the volume to the alpine /app/data directory
+#           - mountPath: /app/data
+#             name: test-volume
+#         volumes:
+#         - name: test-volume
+#           hostPath:
+#                   path: /Users/alextanhongpin/Documents/architecture/kubernetes-local-volume/tmp
+#                   type: DirectoryOrCreate
+# ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: local-volume-deployment
+        labels:
+                app: local-volume
+spec:
+        replicas: 3
+        selector:
+                matchLabels:
+                        app: local-volume
+        template:
+                metadata:
+                        labels:
+                                app: local-volume
+                spec:
+                        containers:
+                        - image: alextanhongpin/local-volume:latest
+                          imagePullPolicy: IfNotPresent
+                          name: local-volume
+                          volumeMounts:
+                          # We mount the volume to the alpine /app/data directory
+                          - mountPath: /app/data
+                            name: test-volume
+                        volumes:
+                        - name: test-volume
+                          hostPath:
+                                  path: /Users/alextanhongpin/Documents/architecture/kubernetes-local-volume/tmp
+                                  type: DirectoryOrCreate
